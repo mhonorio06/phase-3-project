@@ -62,7 +62,7 @@ def country_waterfall_menu(waterfalls, country, id, index):
     else:
         print("Invalid Choice")
 
-def waterfall_menu(waterfalls, index, number):
+def waterfall_menu(index, number):
     print("Press U or u to update waterfall")
     print("Press D or d to delete waterfall")
     print("Press B or b to go back to the previous menu")
