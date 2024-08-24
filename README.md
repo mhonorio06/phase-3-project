@@ -12,4 +12,4 @@ First I started off by creating my models folder for my classes. I started by cr
 
 #credits
 
-I would like to give credit to Flatiron school, after watching a lot of the videos it gave me an insight of how I wanted the interface to look. As well as scheduling times for technical hours.
+I would like to give credit to Flatiron school, after watching a lot of the videos it gave me an insight of how I wanted the interface to look, as well as scheduling times for technical hours. It was a lot trial and error, trying things out until I found a way for everything to work out the way I wanted it to.
