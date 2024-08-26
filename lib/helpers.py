@@ -21,7 +21,7 @@ def get_country(index):
             for i, waterfall in enumerate(country.waterfalls(), start = 1): 
                 
                 print( i, waterfall.name)    
-            
+                print(waterfall.country_id)
             print("*******************************")
             country_waterfall_menu(country.waterfalls(), country, country.id, index) 
         else:
@@ -42,7 +42,7 @@ def country_waterfall_menu(waterfalls, country, id, index):
         number = int(choice)
         print(f"Information selected on waterfall in {country} ")
         print("*******************************")
-        print(waterfalls[number - 1])    
+        print(waterfalls[number - 1]) 
         print("*******************************")
         
         waterfall_menu(index, number)
