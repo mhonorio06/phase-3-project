@@ -21,11 +21,9 @@ def get_country(index):
             for i, waterfall in enumerate(country.waterfalls(), start = 1): 
                 
                 print( i, waterfall.name)    
-                print(waterfall.country_id)
             print("*******************************")
             country_waterfall_menu(country.waterfalls(), country, country.id, index) 
-        else:
-            print("Invalid Choice") 
+         
 
 def country_waterfall_menu(waterfalls, country, id, index):
     from cli import country_menu
@@ -141,8 +139,7 @@ def create_waterfall(id):
 
     try:
         waterfall = Waterfall.create(name, location, elevation, country_id)
-        print(f' country_id = {country_id}')
-        print(f' {waterfall} has been created')
+        print(f' {waterfall.name} has been created')
     except Exception as exc:
         print(f"Error creating {waterfall.name}", exc)
 
