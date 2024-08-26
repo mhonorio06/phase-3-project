@@ -146,14 +146,14 @@ class Waterfall:
 
     @classmethod
     def create(cls, name, location, elevation, country_id):
-        """ Initialize a new Employee instance and save the object to the database """
+        """ Initialize a new Waterfall instance and save the object to the database """
         waterfall = cls(name, location, elevation, country_id)
         waterfall.save()
         return waterfall
 
     @classmethod
     def instance_from_db(cls, row):
-        """Return an Employee object having the attribute values from the table row."""
+        """Return a Waterfall object having the attribute values from the table row."""
 
         # Check the dictionary for  existing instance using the row's primary key
         waterfall = cls.all.get(row[0])
