@@ -5,8 +5,11 @@ from models.waterfall import Waterfall
 
 def list_countries():
     countries = Country.get_all()
+    print("Countries")
+    print("******************************")
     for i, country in enumerate(countries, start = 1):
         print(f'{i}. {country.name}')
+    print("******************************")
 
 def get_country(index):
     countries = Country.get_all()
@@ -17,7 +20,7 @@ def get_country(index):
             print("*******************************")
             for i, waterfall in enumerate(country.waterfalls(), start = 1): 
                 
-                print( i, waterfall.name)
+                print( i, waterfall.name)    
             
             print("*******************************")
             country_waterfall_menu(country.waterfalls(), country, country.id, index) 
@@ -96,8 +99,7 @@ def choice_menu():
         main()
     elif choice == "e" or choice == "E":
         exit_program()
-    else:
-        print("Invalid Choice")
+    
 
 def create_country():
     name = input("Add new country> ")
@@ -139,9 +141,10 @@ def create_waterfall(id):
 
     try:
         waterfall = Waterfall.create(name, location, elevation, country_id)
+        print(f' country_id = {country_id}')
         print(f' {waterfall} has been created')
     except Exception as exc:
-        print(f"Error creating {waterfall}", exc)
+        print(f"Error creating {waterfall.name}", exc)
 
 def update_waterfall():
     from models.country import Country
@@ -307,9 +310,6 @@ def delete_waterfall(index, number):
                 if i == number:
                     waterfall.delete()
                     print(f" {waterfall.name} has been deleted!")    
-                    
-                else:
-                    print(f"Error deleting: {waterfall.name} not found")
     
 def exit_program():
     print("goodbye")

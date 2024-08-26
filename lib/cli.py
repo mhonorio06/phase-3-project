@@ -1,12 +1,10 @@
-#1 lib/cli.py
+#!/usr/bin/env python3
 
 from helpers import(
     exit_program,
     list_countries,
     choice_menu,
 )
-
-countries = []
 
 def main():
         menu()
@@ -19,10 +17,9 @@ def main():
             print("Invalid Choice")
 
 def country_menu():
-    print("*************")
     list_countries()
-    print("*************")
     choice_menu()
+    
     
 def menu():
     print("***Welcome to my sightseeing app!***")

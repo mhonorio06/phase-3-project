@@ -10,6 +10,7 @@ def reset_database():
     Country.drop_table()
     Country.create_table()
     Waterfall.create_table()
+    Waterfall.add_column()
     
 reset_database()
 breakpoint()
