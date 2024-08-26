@@ -6,7 +6,7 @@ class Waterfall:
     # Dictionary of objects saved to the database.
     all = {}
 
-    def __init__(self, name, location, elevation, country_id, id=None):
+    def __init__(self, name, location, elevation, country_id, id = None):
         self.id = id
         self.name = name
         self.location = location

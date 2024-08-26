@@ -20,14 +20,9 @@ def get_country(index):
                 print( i, waterfall.name)
             
             print("*******************************")
-            country_waterfall_menu(country.waterfalls(), country, country.id, index)  
-
-                    
-            
-            
-
-
-
+            country_waterfall_menu(country.waterfalls(), country, country.id, index) 
+        else:
+            print("Invalid Choice") 
 
 def country_waterfall_menu(waterfalls, country, id, index):
     from cli import country_menu
@@ -47,7 +42,7 @@ def country_waterfall_menu(waterfalls, country, id, index):
         print(waterfalls[number - 1])    
         print("*******************************")
         
-        waterfall_menu(waterfalls, index, number)
+        waterfall_menu(index, number)
     elif choice == "B" or choice == "b":
         country_menu()
     elif choice == "D" or choice == "d":
@@ -101,9 +96,8 @@ def choice_menu():
         main()
     elif choice == "e" or choice == "E":
         exit_program()
-    
-
-
+    else:
+        print("Invalid Choice")
 
 def create_country():
     name = input("Add new country> ")
@@ -145,15 +139,9 @@ def create_waterfall(id):
 
     try:
         waterfall = Waterfall.create(name, location, elevation, country_id)
-        print(f"Success {waterfall}")
-        
+        print(f' {waterfall} has been created')
     except Exception as exc:
-        print("Error creating waterfall", exc)
-
-def find_by_location():
-    location = input("enter location of waterfall:")
-    if waterfall := Waterfall.find_by_location(location):
-        print(waterfall)
+        print(f"Error creating {waterfall}", exc)
 
 def update_waterfall():
     from models.country import Country
@@ -315,20 +303,13 @@ def delete_waterfall(index, number):
     countries = Country.get_all()
     for i, country in enumerate(countries, start = 1):
         if i == index:
-            for i, waterfall in enumerate(country.waterfalls(), 1):
+            for i, waterfall in enumerate(country.waterfalls(), start = 1):
                 if i == number:
                     waterfall.delete()
                     print(f" {waterfall.name} has been deleted!")    
                     
                 else:
                     print(f"Error deleting: {waterfall.name} not found")
-
-            
-
-            
-    
-    
-
     
 def exit_program():
     print("goodbye")
