@@ -8,8 +8,8 @@ class Country:
         self.id = id
         self.name = name
 
-    def __repr__(self):
-        return f' {self.name}'
+    # def __repr__(self):
+    #     return f' {self.name}'
 
     @property
     def name(self):

@@ -13,12 +13,12 @@ class Waterfall:
         self.elevation = elevation
         self.country_id = country_id
 
-    def __repr__(self):
-        return (
-                    f"Name : {self.name}\n" + 
-                    f"Town : {self.location}\n" +     
-                    f"Elevation : {self.elevation}"
-        ) 
+    # def __repr__(self):
+    #     return (
+    #                 f"Name : {self.name}\n" + 
+    #                 f"Town : {self.location}\n" +     
+    #                 f"Elevation : {self.elevation}"
+    #     ) 
         
 
     @property
