@@ -13,59 +13,58 @@ def list_countries():
 
 def get_country(index):
     countries = Country.get_all()
-    for i, country in enumerate(countries, start = 1):
-        if i == index:
+    country = countries[index - 1]
     
-            print(f"waterfalls in {country.name}")
-            print("*******************************")
-            waterfalls = country.waterfalls()
-            for i, waterfall in enumerate(waterfalls, start = 1): 
-                print(f'{i}. {waterfall.name}')    
-            print("*******************************")       
-            
-            country_waterfall_menu(waterfalls, country, index) 
+    print(f"waterfalls in {country.name}")
+    print("*******************************")
+    waterfalls = country.waterfalls()
+    for i, waterfall in enumerate(waterfalls, start = 1): 
+        print(f'{i}. {waterfall.name}')    
+    print("*******************************")       
+    
+    country_waterfall_menu(country) 
             
 
 
-def country_waterfall_menu(waterfalls, country, index):
+def country_waterfall_menu(country):
     from cli import country_menu
     print("Please select the number of the waterfall to see its details ")
     txt = "or"
     o = txt.center(20)
     print(o)
     print("Press A or a to add a new waterfall to the country ")
+    print("Press U or u to update country")
     print("Press D or d to delete the country ")
     print("Press B or b to go back to the previous menu ")
     print("Press E or e to exit program ")
-    country_name = getattr(country, "name")
     choice = input("> ")
     if choice.isdigit(): 
         number = int(choice)
-        print(f"Information selected on waterfall in {country_name} ")
+        print(f"Information selected on waterfall in {country.name} ")
         print("*******************************")
-        name = getattr(waterfalls[number - 1], "name")
-        location = getattr(waterfalls[number - 1], "location")
-        elevation = getattr(waterfalls[number - 1], "elevation")
-        print(f'Name: {name} ')
-        print(f'Location: {location}')
-        print(f'Elevation: {elevation} ft') 
+        waterfall = country.waterfalls()[number - 1]
+        print(f'Name: {waterfall.name} ')
+        print(f'Location: {waterfall.location}')
+        print(f'Elevation: {waterfall.elevation} ft') 
         print("*******************************")
-        waterfall_menu(index, waterfalls)
+        waterfall_menu(country, waterfall)
     if choice == "B" or choice == "b":
         country_menu()
     elif choice == "D" or choice == "d":
         delete_country(country)
         country_menu()
-        
+    elif choice == "U" or choice == "u":
+        update_country()
+        country_menu()
     elif choice == "A" or choice == "a":
         create_waterfall(country)
-        get_country(index)
+        get_country(country.id)
     elif choice == "E" or choice == "e":
         exit_program()
     else:
         print("Invalid Choice")
 
-def waterfall_menu(index, waterfalls):
+def waterfall_menu(country, waterfall):
     print("Press U or u to update waterfall")
     print("Press D or d to delete waterfall")
     print("Press B or b to go back to the previous menu")
@@ -73,13 +72,13 @@ def waterfall_menu(index, waterfalls):
     choice = input("> ")
     if choice == "U" or choice == "u":
         update_waterfall()
-        get_country(index)
+        get_country(country.id)
 
     elif choice == "D" or choice == "d":
-        delete_waterfall(waterfalls)
-        get_country(index)
+        delete_waterfall(waterfall)
+        get_country(country.id)
     elif choice == "B" or choice == "b":
-        get_country(index)
+        get_country(country.id)
 
     elif choice == "E" or choice == "e":
         exit_program()
@@ -107,12 +106,13 @@ def choice_menu():
     
 
 def create_country():
-    name = input("Add new country> ")
+    print("Add new country:")
+    name = input("> ")
     try:
         country = Country.create(name)
-        print(f'Success {country} created!')
+        print(f' {country.name} created!')
     except Exception as exc:
-        print(f"Error creating {country}", exc)
+        print(f"Error creating {country.name}", exc)
     
 
 def update_country():
@@ -122,34 +122,33 @@ def update_country():
             name = input("Enter a new country: ")
             country.name = name
             country.update()
+            print(f'{country.name} updated!')
         except Exception as exc:
-            print(f"Error updating {name} ", exc)
+            print(f"Error updating {country.name} ", exc)
     else:
-        print(f'Country {name} not found')
+        print(f'Country {country.name} not found')
 
 def delete_country(country):
-    id = getattr(country, "id" )
-    if country := Country.find_by_id(id):
+    if country := Country.find_by_id(country.id):
        country.delete()
        print(f"{country.name} has been deleted!")
     else:
-        print(f"Error deleting: {country} not found")
+        print(f"Error deleting: {country.name} not found")
 
     
 
 def create_waterfall(country):
-    id = getattr(country, "id")
-    print(id)
+    #entering input to create waterfall
     name = input("Enter name of waterfall: ")
     location = input("Enter town near waterfall: ")
     elevation = int(input("Enter the elevation of the waterfall: "))
-    country_id = id
+    country_id = country.id
 
     try:
         waterfall = Waterfall.create(name, location, elevation, country_id)
         print(f' {waterfall.name} has been created')
     except Exception as exc:
-        print(f"Error creating {waterfall}", exc)
+        print(f"Error creating {waterfall.name}", exc)
 
 def update_waterfall():
     from models.country import Country
@@ -185,28 +184,13 @@ def update_waterfall():
                     elevation = int(input("> "))
                     waterfall.elevation = elevation
                     waterfall.update()
-                    country = Country.find_by_id(waterfall.country_id)
-                    print(f" Information on selected waterfall in {country.name} ")
-                    
-                    print("*****************")
-                    print(f'Name: {waterfall.name}')
-                    print(f'Location: {waterfall.location}')
-                    print(f'Elevation: {waterfall.elevation}')
-                    print("*****************")
-
+                    print(f'{waterfall.name} updated')
                 except Exception as exc:
                     print(f"Error updating Elevation {waterfall.elevation} ", exc)
     #if no value: keep elevation property the same, while location and name updated
             elif elevation == 0:                 
                     waterfall = Waterfall.find_by_location(location)
-                    country = Country.find_by_id(waterfall.country_id)
-
-                    print(f" Information on selected waterfall in {country.name} ")
-                    print("*****************")
-                    print(f'Name: {waterfall.name}')
-                    print(f'Location: {waterfall.location}')
-                    print(f'Elevation: {waterfall.elevation}')
-                    print("*****************")
+                    print(f'{waterfall.name} updated')
 
             else:
                 print("Invalid Choice")
@@ -222,14 +206,7 @@ def update_waterfall():
                     waterfall.elevation = elevation
                     waterfall.update()
                     
-                    country = Country.find_by_id(waterfall.country_id)
-                    print(f" Information on selected waterfall in {country.name} ")
-
-                    print("*****************")
-                    print(f'Name: {waterfall.name}')
-                    print(f'Location: {waterfall.location}')
-                    print(f'Elevation: {waterfall.elevation}')
-                    print("*****************")
+                    print(f'{waterfall.name} updated')
                     
                 except Exception as exc:
                     print(f"Error updating waterfall {waterfall.elevation} ", exc)
@@ -237,16 +214,10 @@ def update_waterfall():
             elif elevation == 0:
                 waterfall = Waterfall.find_by_name(name)
 
-                country = Country.find_by_id(waterfall.country_id)
-                print(f" Information on selected waterfall in {country.name} ")
-                print("*****************")
-                print(f'Name: {waterfall.name}')
-                print(f'Location: {waterfall.location}')
-                print(f'Elevation: {waterfall.elevation}')
-                print("*****************")
+                print(f'{waterfall.name} updated')
         else:
             print("Invalid Choice \n")
-            waterfall_menu()
+
                 
     #No update for name property and updating location property
     elif name == "":
@@ -270,13 +241,7 @@ def update_waterfall():
                     waterfall.elevation = elevation
                     waterfall.update()
 
-                    country = Country.find_by_id(waterfall.country_id)
-                    print(f" Information on selected waterfall in {country.name} ")
-                    print("*****************")
-                    print(f'Name: {waterfall.name}')
-                    print(f'Location: {waterfall.location}')
-                    print(f'Elevation: {waterfall.elevation}')
-                    print("*****************")
+                    print(f'{waterfall.name} updated')
                     
                 except Exception as exc:
                     print(f"Error updating waterfall {waterfall.elevation} ", exc)
@@ -284,13 +249,9 @@ def update_waterfall():
             elif elevation == 0:
                 waterfall = Waterfall.find_by_location(location)
 
-                country = Country.find_by_id(waterfall.country_id)
-                print(f" Information on selected waterfall in {country.name} ")
-                print("*****************")
-                print(f'Name: {waterfall.name}')
-                print(f'Location: {waterfall.location}')
-                print(f'Elevation: {waterfall.elevation}')
-                print("*****************")
+                print(f'{waterfall.name} updated')
+            else:
+                print("Invalid Choice \n")
                 
         #No update for name or location
         elif location == "":
@@ -303,13 +264,7 @@ def update_waterfall():
                     waterfall.elevation = elevation
                     waterfall.update()
                     
-                    country = Country.find_by_id(waterfall.country_id)
-                    print(f" Information on selected waterfall in {country.name} ")
-                    print("*****************")
-                    print(f'Name: {waterfall.name}')
-                    print(f'Location: {waterfall.location}')
-                    print(f'Elevation: {waterfall.elevation}')
-                    print("*****************")
+                    print(f'{waterfall.name} updated')
 
                 except Exception as exc:
                     print(f"Error updating waterfall {waterfall.elevation} ", exc)
@@ -321,14 +276,12 @@ def update_waterfall():
     else:
         print("******Invalid Choice******\n")
 
-def delete_waterfall(waterfalls):
-    for waterfall in waterfalls:
-        name = getattr(waterfall, "name")
-        if waterfall:= Waterfall.find_by_name(name):
+def delete_waterfall(waterfall):
+        if waterfall:= Waterfall.find_by_id(waterfall.id):
             waterfall.delete()
-            print(f' {name} has been deleted!')
+            print(f' {waterfall.name} has been deleted!')
         else:
-            print(f'Error deleting: {name} not found')
+            print(f'Error deleting: {waterfall.name} not found')
     
 def exit_program():
     print("goodbye")
