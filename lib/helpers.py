@@ -151,7 +151,6 @@ def create_waterfall(country):
         print(f"Error creating {waterfall.name}", exc)
 
 def update_waterfall():
-    from models.country import Country
     #updating name property of waterfall
     print("Enter name to change or press enter to keep:")
     name = input("> ")

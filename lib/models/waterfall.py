@@ -76,17 +76,9 @@ class Waterfall:
             id INTEGER PRIMARY KEY,
             name TEXT,
             location TEXT,
-            elevation INTEGER
+            elevation INTEGER,
+            country_id INTEGER
         )
-        """
-        CURSOR.execute(sql)
-        CONN.commit()
-
-    @classmethod
-    def add_column(cls):
-        """Add column to existing table waterfall"""
-        sql = """
-            ALTER TABLE waterfalls ADD COLUMN country_id INTEGER;
         """
         CURSOR.execute(sql)
         CONN.commit()

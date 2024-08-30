@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# lib/debug.py
 
 from models.__init__ import CONN, CURSOR
 from models.waterfall import Waterfall
@@ -10,7 +9,6 @@ def reset_database():
     Country.drop_table()
     Country.create_table()
     Waterfall.create_table()
-    Waterfall.add_column()
     
-reset_database()
+
 breakpoint()
